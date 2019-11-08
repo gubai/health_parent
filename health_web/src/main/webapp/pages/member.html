@@ -39,7 +39,7 @@
                         </el-table-column>
                         <el-table-column prop="idCard" label="身份证号" align="center"></el-table-column>
                         <el-table-column prop="phoneNumber" label="手机号" align="center"></el-table-column>
-                        <el-table-column prop="regTime" label="注册时间" align="center" :formatter="dateFormat"></el-table-column>
+                        <el-table-column prop="regTime" label="注册时间" align="center" :formatter="dateFormat" :data="regTime"></el-table-column>
                     </el-table>
                     <div class="pagination-container">
                         <el-pagination
@@ -72,6 +72,7 @@
 					  queryString:null//查询条件
 				},
 				dataList: [],//当前页要展示的分页列表数据
+                regTime:[]
             },
             //钩子函数，VUE对象初始化完成后自动执行
             created() {
@@ -124,8 +125,10 @@
                 },
                 //时间格式化
                 dateFormat:function(row,column){
-                    var t=new Date(row.regTime);//row 表示一行数据, updateTime 表示要格式化的字段名称
-                    return t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate();
+                    if(row.regTime!=null){
+                        var t=new Date(row.regTime);//row 表示一行数据, updateTime 表示要格式化的字段名称
+                        return t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate();
+                    }
                 }
             }
         })
