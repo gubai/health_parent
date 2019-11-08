@@ -16,6 +16,15 @@
         INSERT INTO t_member (name,sex,idCard,phoneNumber,regTime)
         values(#{name},#{sex},#{idCard},#{phoneNumber},#{regTime})
     </insert>
+
+
+    <!--会员管理的条件查询（如果有条件，按照条件查询；如果没有条件，查询所有），如果动态sql传递参数，需要使用value表示传递的参数-->
+    <select id="findPage" parameterType="string" resultType="member">
+        SELECT *  FROM t_member
+        <if test="value!=null and value.length>0">
+            WHERE  `NAME` LIKE concat('%',#{value},'%') OR idCard LIKE concat('%',#{value},'%')
+        </if>
+    </select>
 </mapper>
 
 

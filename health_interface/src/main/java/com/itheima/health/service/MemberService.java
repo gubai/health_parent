@@ -1,9 +1,7 @@
 package com.itheima.health.service;
 
-import com.itheima.health.entity.Result;
+import com.itheima.health.entity.PageResult;
 import com.itheima.health.pojo.Member;
-
-import java.util.Map;
 
 /**
  * @author keyin Liu
@@ -14,4 +12,6 @@ public interface MemberService {
     Member findMemberByTelephone(String telephone);
 
     void addMember(Member member);
+
+    PageResult pageQuery(Integer currentPage, Integer pageSize, String queryString);
 }
