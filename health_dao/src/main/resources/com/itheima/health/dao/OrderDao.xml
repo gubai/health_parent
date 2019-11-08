@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.health.dao.OrderDao">
+    <!--使用会员id+预约时间+套餐id作为查询条件，查询体检预约订单表，判断当前时间是否重复预约-->
+    <resultMap id="orderMap" type="order">
+        <id property="id" column="id"></id>
+        <result property="memberId" column="member_id"></result>
+        <result property="orderDate" column="orderDate"></result>
+        <result property="orderType" column="orderType"></result>
+        <result property="orderStatus" column="orderStatus"></result>
+        <result property="setmealId" column="setmealId"></result>
+
+    </resultMap>
+
+    <select id="findOrderListByCondition" parameterType="order" resultMap="orderMap">
+        SELECT *FROM t_order
+        <where>
+            <if test="id!=null">
+                AND id=#{id}
+            </if>
+            <if test="memberId!=null">
+                AND member_id=#{memberId}
+            </if>
+            <if test="orderDate!=null">
+                AND orderDate=#{orderDate}
+            </if>
+            <if test="orderType!=null">
+                AND orderType=#{orderType}
+            </if>
+            <if test="orderStatus!=null">
+                AND orderStatus=#{orderStatus}
+            </if>
+            <if test="setmealId!=null">
+                AND setmeal_id=#{setmealId}
+            </if>
+
+        </where>
+    </select>
+
+    <!--向订单表插入数据-->
+
+    <insert id="add" parameterType="order">
+<selectKey keyProperty="id" resultType="int" order="AFTER">
+    SELECT last_insert_id()
+</selectKey>
+      INSERT INTO t_order (member_id,orderDate,orderType,orderStatus,setmeal_id)
+      values(#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
+    </insert>
+
+
+    <!--查询订单详细信息-->
+    <select id="findById" parameterType="int" resultType="map">
+         SELECT m.name member,s.name setmeal,o.orderDate orderDate,o.orderType orderType FROM t_order o,t_member m,t_setmeal s WHERE o.member_id = m.id AND o.setmeal_id = s.id AND o.id = #{id}
+    </select>
+</mapper>
+

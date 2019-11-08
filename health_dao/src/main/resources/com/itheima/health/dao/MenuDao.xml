@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.health.dao.MenuDao">
+
+   <select id="findMenusByRoleId" parameterType="int" resultType="com.itheima.health.pojo.Menu">
+       SELECT m.* FROM t_menu m ,t_role_menu rm WHERE m.id=rm.menu_id AND rm.role_id=#{role_id} and m.level=1
+   </select>
+
+    <!--根据菜单的父类id,查询子类菜单-->
+    <select id="findChildrenbyparentMenuId" parameterType="int" resultType="menu">
+        SELECT * FROM t_menu WHERE parentMenuId=#{id}
+    </select>
+</mapper>
+
